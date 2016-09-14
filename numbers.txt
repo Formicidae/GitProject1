@@ -6,4 +6,6 @@ XXVII           27
 MCLXV           1165
 LVI             56  
 MMMCDLII        3452
-II              2   MC              1100  
+II              2   
+MC              1100
+                3432

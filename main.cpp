@@ -138,12 +138,21 @@ int main()
 	fstream file;
 	string line;
 	string tmp;
+	bool last = false;
 	char cline[24];
 	file.open("numbers.txt", ios::in | ios::out | ios::binary);
 	while(!file.eof())
     {
         getline(file, line);
         cout << line << endl;
+
+        //file.seekg(-1,ios::cur);
+        cout << "tell " << file.tellg() << endl;
+        if(file.tellg() == -1){
+            cout << "At last line";
+            last = true;
+        }
+        //file.seekg(1,ios::cur);
 
         if(line[0] == ' ')
         {
@@ -158,6 +167,13 @@ int main()
             line = rom + line.substr(rom.length(),20);
             cout << line << endl;
             file.seekg(-22,ios::cur);
+            if(last){
+                cout << "Final line N" << endl;
+                //file << 'A';
+                file.seekp(-22,ios_base::end);
+                cout << line << endl;
+                file << line;
+            }
             file << line;
             //file.seekg(24,ios::cur);
             getline(file, line);
@@ -170,6 +186,11 @@ int main()
             line = line.substr(0,16) + s.str();
             cout << line << endl;
             file.seekg(-22,ios::cur);
+            if(last){
+                cout << "Final line R " << endl;
+                //file << 'A';
+                file.seekp(-22,ios_base::end);
+            }
             file << line;
             getline(file, line);
         }
