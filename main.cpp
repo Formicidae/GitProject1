@@ -166,17 +166,26 @@ int main()
             cout << rom << endl;
             line = rom + line.substr(rom.length(),20);
             cout << line << endl;
-            file.seekg(-22,ios::cur);
+
             if(last){
                 cout << "Final line N" << endl;
-                //file << 'A';
-                file.seekp(-22,ios_base::end);
+                cout << line << endl;
+                //file.seekg(-100,ios::end);
+                file << line;
+                cout << line << endl;
+                getline(file, line);
                 cout << line << endl;
                 file << line;
             }
-            file << line;
+            else{
+                file.seekg(-22,ios::cur);
+                file << line;
+                getline(file, line);
+
+            }
+
             //file.seekg(24,ios::cur);
-            getline(file, line);
+
 
         }
         else{
