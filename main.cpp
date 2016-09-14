@@ -11,7 +11,6 @@ using namespace std;
 
 int convertToArabic(string rom) {
 	int sum = 0;
-	cout << "Rom is: " << rom << endl;
 	//Checks every character in the roman numeral
 	//Looks for each value in the tens place and for 4s and 9s checks after C, X or I
 	for (int i = 0; i < rom.length(); i++)
@@ -36,11 +35,9 @@ int convertToArabic(string rom) {
 			sum -= 1;
 		else if (rom[i] == 'I')
 			sum += 1;
-
-        cout << "Sum: " << sum << endl;
 	}
 	return sum;
-	//return 1234;
+
 }
 
 string convertToRoman(int num) {
@@ -133,7 +130,6 @@ string convertToRoman(int num) {
 	else if(ones == 9){
 		output += "IX";
 	}
-	//return "TEST";
 	return output;
 }
 
@@ -146,19 +142,16 @@ int main()
 	string line;
 	string tmp;
 	bool last = false;
-	char cline[24];
 	//Opens file in input and output mode
 	file.open("numbers.txt", ios::in | ios::out | ios::binary);
 	//checks each ine if file isn't at it's end
 	while(!file.eof())
     {
+        //Gets the line for processing
         getline(file, line);
-        cout << line << endl;
 
-        //file.seekg(-1,ios::cur);
-        cout << "tell " << file.tellg() << endl;
+        //Checks if its at the end of file
         if(file.tellg() == -1){
-            cout << "At last line";
             last = true;
         }
         //file.seekg(1,ios::cur);
@@ -166,67 +159,64 @@ int main()
         //Checks if line begins with space, if it does it's a Arabic line
         if(line[0] == ' ')
         {
+            //Gets the number and convert the string to int
             rom = "";
-            cout << "It's a number" << endl;
             tmp = line.substr(16,20);
             stringstream myStream(tmp);
             myStream >> i;
-            cout << i << endl;
+            //Converts the int to roman and adds it to the beginning of the line
             rom = convertToRoman(i);
-            cout << rom << endl;
             line = rom + line.substr(rom.length(),20);
-            cout << line << endl;
 
+            //check if its on the last line
             if(last){
+                //Reopens the file and moves from the last spot to the beginning of the last line
                 file.close();
                 file.open("numbers.txt", ios::in | ios::out | ios::binary);
-                cout << "Final line N" << endl;
-                cout << line << endl;
                 file.seekg(-21,ios::end);
                 file << endl;
                 file << line;
-                cout << line << endl;
                 getline(file, line);
             }
             else{
+                //move to the beginning of the line and overlays it with the new one
                 file.seekg(-22,ios::cur);
                 file << line;
                 getline(file, line);
-
             }
-
-            //file.seekg(24,ios::cur);
-
-
         }
         else{
-            cout << "Its Roman" << endl;
+            //If it's not a space it must be a Roman numeral
+            //Grabs the beginning of the string for processing
             stringstream s;
             s << convertToArabic(line.substr(0,16));
             line = line.substr(0,16) + s.str();
-            cout << line << endl;
-            file.seekg(-22,ios::cur);
             if(last){
-                cout << "Final line R " << endl;
-                //file << 'A';
-                file.seekp(-22,ios_base::end);
+                //If its at the end reopen the file
+                file.close();
+                file.open("numbers.txt", ios::in | ios::out | ios::binary);
+                file.seekg(-21,ios::end);
+                file << endl;
+                file << line;
+                getline(file, line);
             }
-            file << line;
-            getline(file, line);
+            else{
+                //If its not at the end just move back to beginning of the line and overlay it with the new line
+                file.seekg(-22,ios::cur);
+                file << line;
+                getline(file, line);
+            }
         }
-
-
-
+        //Checks if there are values on the next line
+        //If not break the loop and end the program
         file.seekg(-1,ios::cur);
-        cout << (int)file.peek() << endl;
         if((int)file.peek() != 10){
-            cout << "Breaking";
             break;
         }
         file.seekg(1,ios::cur);
-        //cout << (int)file.peek() << endl;
     }
     file.close();
+    cout << "File processing complete.";
     return 0;
 }
 
