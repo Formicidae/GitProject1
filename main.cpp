@@ -12,6 +12,8 @@ using namespace std;
 int convertToArabic(string rom) {
 	int sum = 0;
 	cout << "Rom is: " << rom << endl;
+	//Checks every character in the roman numeral
+	//Looks for each value in the tens place and for 4s and 9s checks after C, X or I
 	for (int i = 0; i < rom.length(); i++)
 	{
 		if (rom[i] == 'M')
@@ -42,11 +44,16 @@ int convertToArabic(string rom) {
 }
 
 string convertToRoman(int num) {
+    //Gets the number in the thousands, hundreds, tens and ones place
 	string output = "";
 	int thou = num / 1000;
 	int hun = (num % 1000) / 100;
 	int tens = ((num % 1000) % 100) / 10;
 	int ones = (((num % 1000) % 100) % 10);
+
+	//looks first for places that are less than 4
+	//then checks for 4 and 5 nad adds those values
+	//then adds any values greater than 5
 
 	if (thou > 0 && thou <= 4)
 	{
@@ -140,7 +147,9 @@ int main()
 	string tmp;
 	bool last = false;
 	char cline[24];
+	//Opens file in input and output mode
 	file.open("numbers.txt", ios::in | ios::out | ios::binary);
+	//checks each ine if file isn't at it's end
 	while(!file.eof())
     {
         getline(file, line);
@@ -154,6 +163,7 @@ int main()
         }
         //file.seekg(1,ios::cur);
 
+        //Checks if line begins with space, if it does it's a Arabic line
         if(line[0] == ' ')
         {
             rom = "";
@@ -168,14 +178,15 @@ int main()
             cout << line << endl;
 
             if(last){
+                file.close();
+                file.open("numbers.txt", ios::in | ios::out | ios::binary);
                 cout << "Final line N" << endl;
                 cout << line << endl;
-                //file.seekg(-100,ios::end);
+                file.seekg(-21,ios::end);
+                file << endl;
                 file << line;
                 cout << line << endl;
                 getline(file, line);
-                cout << line << endl;
-                file << line;
             }
             else{
                 file.seekg(-22,ios::cur);
