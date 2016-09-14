@@ -1,10 +1,9 @@
-XXVII               
-CXXIV           123 
-MCLXV               
-MCDXLIV         1975
-XXVII               
-MCLXV               
-CDXLIV          56  
-MMMCDXLIV       3452
-CDXLIV          2   
-MC                  
+XXVII           27  
+CXXIII          123 
+MCLXV           1165
+MCMLXXV         1975
+XXVII           27  
+MCLXV           1165
+LVI             56  
+MMMCDLII        3452
+II              2   MC              1100  

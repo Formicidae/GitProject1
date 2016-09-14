@@ -10,7 +10,8 @@
 using namespace std;
 
 int convertToArabic(string rom) {
-	int sum;
+	int sum = 0;
+	cout << "Rom is: " << rom << endl;
 	for (int i = 0; i < rom.length(); i++)
 	{
 		if (rom[i] == 'M')
@@ -19,31 +20,33 @@ int convertToArabic(string rom) {
 			sum += 500;
 		else if (rom[i] == 'C' && (rom[i + 1] == 'M' || rom[i + 1] == 'D'))
 			sum -= 100;
-		else if (rom[i] = 'C')
+		else if (rom[i] == 'C')
 			sum += 100;
-		else if (rom[i] = 'L')
+		else if (rom[i] == 'L')
 			sum += 50;
 		else if (rom[i] == 'X' && (rom[i + 1] == 'L' || rom[i + 1] == 'C'))
 			sum -= 10;
-		else if (rom[i] = 'X')
+		else if (rom[i] == 'X')
 			sum += 10;
-		else if (rom[i] = 'V')
+		else if (rom[i] == 'V')
 			sum += 5;
 		else if (rom[i] == 'I' && (rom[i + 1] == 'V' || rom[i + 1] == 'X'))
 			sum -= 1;
-		else if (rom[i] = 'I')
+		else if (rom[i] == 'I')
 			sum += 1;
+
+        cout << "Sum: " << sum << endl;
 	}
-	//return sum;
-	return 1234;
+	return sum;
+	//return 1234;
 }
 
 string convertToRoman(int num) {
-	string output;
+	string output = "";
 	int thou = num / 1000;
 	int hun = (num % 1000) / 100;
 	int tens = ((num % 1000) % 100) / 10;
-	int ones = (((num % 1000) % 100) % 10) / 10;
+	int ones = (((num % 1000) % 100) % 10);
 
 	if (thou > 0 && thou <= 4)
 	{
@@ -59,20 +62,21 @@ string convertToRoman(int num) {
 			output += "C";
 		}
 	}
-	else if (hun = 4) {
+	else if (hun == 4) {
 		output += "CD";
 	}
-	else if (hun = 5) {
+	else if (hun == 5) {
 		output += "D";
 	}
 	else if (hun > 5 && hun < 9)
 	{
+	    output += "D";
 		for (int i = 5; i < hun; i++)
 		{
 			output += "C";
 		}
 	}
-	else
+	else if (hun == 9)
 		output += "CM";
 
 	if (tens > 0 && tens < 4) {
@@ -81,22 +85,23 @@ string convertToRoman(int num) {
 			output += "X";
 		}
 	}
-	else if (tens = 4)
+	else if (tens == 4)
 	{
 		output += "XL";
 	}
-	else if (tens = 5)
+	else if (tens == 5)
 	{
 		output += "L";
 	}
 	else if (tens > 5 && tens < 9)
 	{
+	    output += "L";
 		for (int i = 5; i < tens; i++)
 		{
 			output += "X";
 		}
 	}
-	else {
+	else if(tens == 9){
 		output += "XC";
 	}
 	if (ones > 0 && ones < 4) {
@@ -104,20 +109,21 @@ string convertToRoman(int num) {
 			output += "I";
 		}
 	}
-	else if (ones = 4)
+	else if (ones == 4)
 	{
 		output += "IV";
 	}
-	else if (ones = 5) {
+	else if (ones == 5) {
 		output += "V";
 	}
 	else if (ones > 5 && ones < 9) {
+        output += "V";
 		for (int i = 5; i < ones; i++)
 		{
 			output += "I";
 		}
 	}
-	else {
+	else if(ones == 9){
 		output += "IX";
 	}
 	//return "TEST";
@@ -141,10 +147,12 @@ int main()
 
         if(line[0] == ' ')
         {
+            rom = "";
             cout << "It's a number" << endl;
             tmp = line.substr(16,20);
             stringstream myStream(tmp);
             myStream >> i;
+            cout << i << endl;
             rom = convertToRoman(i);
             cout << rom << endl;
             line = rom + line.substr(rom.length(),20);
@@ -157,6 +165,13 @@ int main()
         }
         else{
             cout << "Its Roman" << endl;
+            stringstream s;
+            s << convertToArabic(line.substr(0,16));
+            line = line.substr(0,16) + s.str();
+            cout << line << endl;
+            file.seekg(-22,ios::cur);
+            file << line;
+            getline(file, line);
         }
 
 
